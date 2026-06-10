@@ -1,7 +1,4 @@
-// =============================================
-//  main.js
-//  Punto de entrada: une los módulos y actualiza el DOM
-// =============================================
+// Une los módulos y actualiza el DOM
  
 import { cargarStays } from "./stays.js";
 import { crearTarjeta } from "./card.js";

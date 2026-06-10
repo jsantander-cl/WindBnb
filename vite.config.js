@@ -4,7 +4,7 @@ import { resolve } from 'path'
 import copy from 'rollup-plugin-copy'
 
 export default defineConfig({
-  base: './',
+  // base: './', (posible solución para el error de las rutas relativas en producción)
   plugins: [
     tailwindcss(),
     copy({

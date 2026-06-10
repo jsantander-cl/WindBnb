@@ -4,15 +4,13 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="style.css" />
-    <script type="module" src="public/main.js"></script>
+    <script type="module" src="/main.js"></script>
     <title>Windbnb</title>
   </head>
 
 <body class="bg-gray-100 text-gray-800">
  
-    <!-- ============================
-         HEADER 
-    ============================= -->
+
     <header class="bg-white px-4 py-6 flex flex-col gap-4
                    md:flex-row md:justify-between md:items-center md:px-20">
  
@@ -21,18 +19,18 @@
         <img src="./public/images/icons/logo-f7862584.svg" alt="windbnb logo" class="w-30" />
       </div>
  
-      <!-- Barra de búsqueda -->
+      <!-- Barra de busqueda -->
       <div class="flex items-center border border-gray-300 rounded-2xl overflow-hidden bg-white">
-        <input
+        <input 
+          id="input-location"
           type="text"
           placeholder="Add location"
-          id="input-location"
           class="flex-1 px-4 py-3 text-sm outline-none placeholder-gray-400"
         />
         <input
+          id="input-guests"
           type="text"
           placeholder="Add guests"
-          id="input-guests"
           class="flex-1 px-4 py-3 text-sm outline-none placeholder-gray-400 border-l border-gray-300"
         />
         <button class="px-4 py-3 flex items-center justify-center">
@@ -42,12 +40,10 @@
  
     </header>
  
-    <!-- ============================
-         MAIN
-    ============================= -->
+
     <main class="px-4 py-8 md:px-20">
  
-      <!-- Título y contador -->
+      <!-- Titulo y contador -->
       <div class="flex justify-between items-center mb-6">
         <h1 class="text-2xl font-extrabold md:text-3xl">Stays in Finland</h1>
         <span class="text-sm text-gray-500" id="stays-count">12+ stays</span>
