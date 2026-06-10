@@ -34,7 +34,7 @@ export function crearTarjeta(stay) {
             ${superhost}${stay.type}${camas}
           </span>
           <span class="flex items-center gap-1 text-xs font-bold">
-            <img src="images/icons/star.svg" alt="estrella" class="w-3 h-3" />
+            <img src="./public/images/icons/star.svg" alt="estrella" class="w-3 h-3" />
             ${stay.rating}
           </span>
         </div>
