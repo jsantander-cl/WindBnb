@@ -1,10 +1,10 @@
-// Une los módulos y actualiza el DOM
+// une los módulos y actualiza el DOM
  
-import { cargarStays } from "./stays.js";
+import { cargarStays } from "./datos.js";
 import { crearTarjeta } from "./card.js";
  
  
-async function mostrarStays() {
+async function mostrarDatos() {
  
   const stays = await cargarStays();
  
@@ -19,4 +19,4 @@ async function mostrarStays() {
 }
  
  
-mostrarStays();
+mostrarDatos();
