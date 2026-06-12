@@ -1,4 +1,4 @@
-import { crearBotonCiudad } from "./searchModal.js";
+import { crearBotonCiudad } from "./searchmodal.js";
 
 export function inicializarFiltros(alojamientos, dibujarTarjetas) {
   const modal = document.getElementById("ventanaEmergenteBusqueda");

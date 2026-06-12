@@ -1,6 +1,6 @@
 import { cargarAlojamientos } from "./datos.js";
 import { crearTarjeta } from "./card.js";
-import { crearPanelBusqueda } from "./searchModal.js";
+import { crearPanelBusqueda } from "./searchmodal.js";
 import { inicializarFiltros } from "./filtro.js";
 
 
