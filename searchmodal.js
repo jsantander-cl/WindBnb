@@ -13,7 +13,7 @@ export function crearPanelBusqueda() {
           <button id="btnCerrarModal" class="text-xl font-bold p-2 cursor-pointer hover:text-gray-500">&times;</button>
         </div>
 
-        <!-- Barra de entradas interna del menú (vista mobile) -->
+        <!-- Barra de entradas interna del menú (VISTA MOBILE) -->
         <div class="flex flex-col border border-gray-300 rounded-2xl shadow-md overflow-hidden bg-white md:flex-row md:items-center">
           
           <!-- Pestaña de Ubicación -->
@@ -28,7 +28,7 @@ export function crearPanelBusqueda() {
             <input id="inputModalHuespedes" type="text" placeholder="Add guests" readonly class="w-full text-sm text-gray-800 placeholder-gray-400 outline-none bg-transparent mt-0.5 cursor-pointer pointer-events-none" />
           </div>
 
-          <!-- Botón Buscar para Computadoras -->
+          <!-- Botón Buscar (VISTA DESKTOP) -->
           <div class="hidden md:block px-6 py-3">
             <button id="btnModalBuscarEscritorio" class="bg-[#EB5757] hover:bg-[#e04b4b] text-white font-bold text-sm px-6 py-3 rounded-2xl flex items-center gap-2 cursor-pointer transition-colors">
               Buscar
@@ -44,23 +44,30 @@ export function crearPanelBusqueda() {
 
           <!-- Selectores numéricos de personas -->
           <div id="panelListaHuespedes" class="flex flex-col gap-8 hidden">
-            <!-- Selector Adultos -->
+            
+          <!-- Selector Adultos -->
             <div class="flex flex-col gap-1">
               <span class="text-sm font-bold text-gray-800">Adults</span>
               <span class="text-xs text-gray-400">Ages 13 or above</span>
+              
               <div class="flex items-center gap-4 mt-2">
                 <button id="btnMenosAdultos" class="w-6 h-6 border border-gray-400 rounded flex items-center justify-center font-bold text-gray-500 cursor-pointer">-</button>
                 <span id="txtAdultos" class="text-sm font-bold w-4 text-center">0</span>
                 <button id="btnMasAdultos" class="w-6 h-6 border border-gray-400 rounded flex items-center justify-center font-bold text-gray-500 cursor-pointer">+</button>
               </div>
             </div>
+
+
             <!-- Selector Niños -->
             <div class="flex flex-col gap-1">
               <span class="text-sm font-bold text-gray-800">Children</span>
+
               <span class="text-xs text-gray-400">Ages 2-12</span>
               <div class="flex items-center gap-4 mt-2">
                 <button id="btnMenosNinos" class="w-6 h-6 border border-gray-400 rounded flex items-center justify-center font-bold text-gray-500 cursor-pointer">-</button>
+                
                 <span id="txtNinos" class="text-sm font-bold w-4 text-center">0</span>
+
                 <button id="btnMasNinos" class="w-6 h-6 border border-gray-400 rounded flex items-center justify-center font-bold text-gray-500 cursor-pointer">+</button>
               </div>
             </div>
@@ -69,7 +76,7 @@ export function crearPanelBusqueda() {
           <div class="hidden md:block"></div>
         </div>
 
-        <!-- BOTÓN BUSCAR MÓVIL (ID corregido estrictamente a camelCase) -->
+        <!-- BOTÓN BUSCAR (mobile) -->
         <div class="mt-auto pt-4 md:hidden flex justify-center">
           <button id="btnModalBuscarMovil" class="bg-[#EB5757] active:bg-[#e04b4b] text-white font-bold text-sm px-8 py-3 rounded-2xl flex items-center gap-2 shadow-md cursor-pointer transition-colors">
             Search

@@ -207,7 +207,7 @@ export function inicializarFiltros(alojamientos, dibujarTarjetas) {
     btnBuscarEscritorio.addEventListener("click", (e) => { e.stopPropagation(); ocultarModal(); });
   }
 
-  
+
   if (btnBuscarMovil) {
     btnBuscarMovil.addEventListener("click", (e) => { e.stopPropagation(); ocultarModal(); });
   }
