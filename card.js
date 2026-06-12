@@ -29,7 +29,7 @@ export function crearTarjeta(alojamiento) {
           </span>
           
           <span class="flex items-center gap-1 text-xs font-bold text-[#6f706f]">
-            <img src="/public/images/icons/star.svg" alt="estrella" class="w-3 h-3" />
+            <img src="./images/icons/star.svg" alt="estrella" class="w-3 h-3" />
             ${alojamiento.rating}
           </span>
         </div>
