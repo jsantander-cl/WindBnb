@@ -4,11 +4,14 @@ import { resolve } from 'path'
 import copy from 'rollup-plugin-copy'
 
 export default defineConfig({
+  // SOLUCIÓN PARA PRODUCCIÓN: Asegura que todos los archivos compilen con rutas relativas correctas
+  base: './',
   plugins: [
     tailwindcss(),
     copy({
       targets: [
-        { src: 'data.json', dest: 'dist' }
+        // Asegúrate de que el archivo que copias coincida con el nombre real 'stays.json'
+        { src: 'stays.json', dest: 'dist' }
       ],
       hook: 'writeBundle'
     })
