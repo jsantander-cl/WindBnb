@@ -91,7 +91,7 @@ export function crearPanelBusqueda() {
 export function crearBotonCiudad(ciudad, pais) {
   return `
     <button class="itemCiudad flex items-center gap-3 text-sm text-gray-700 hover:text-black text-left cursor-pointer transition-colors" data-ciudad="${ciudad}">
-      <img src="./public/images/icons/search.svg" class="w-4 h-4 opacity-50" alt="pin" /> 
+      <img src="./images/icons/search.svg" class="w-4 h-4 opacity-50" alt="pin" /> 
       <span>${ciudad}, ${pais}</span>
     </button>
   `;
