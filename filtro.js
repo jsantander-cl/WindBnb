@@ -1,6 +1,13 @@
 import { crearBotonCiudad } from "./searchmodal.js";
 
 export function inicializarFiltros(alojamientos, dibujarTarjetas) {
+
+  // Variables para guardar el estado de los filtros
+  let cantidadAdultos = 0;
+  let cantidadNinos = 0;
+  let ciudadElegida = "";
+
+  // Buscamos todos los elementos que vamos a usar
   const modal = document.getElementById("ventanaEmergenteBusqueda");
   const btnCerrar = document.getElementById("btnCerrarModal");
 
@@ -8,76 +15,17 @@ export function inicializarFiltros(alojamientos, dibujarTarjetas) {
   const inputEncabezadoHuespedes = document.getElementById("encabezadoFiltroHuespedes");
   const btnEncabezadoBuscar = document.getElementById("btnEncabezadoBuscar");
 
-  const pestañaUbicacion = document.getElementById("pestanaModalUbicacion");
-  const pestañaHuespedes = document.getElementById("pestanaModalHuespedes");
-  
+  const pestanaUbicacion = document.getElementById("pestanaModalUbicacion");
+  const pestanaHuespedes = document.getElementById("pestanaModalHuespedes");
+
   const panelUbicaciones = document.getElementById("panelListaCiudades");
   const panelHuespedes = document.getElementById("panelListaHuespedes");
 
   const btnBuscarEscritorio = document.getElementById("btnModalBuscarEscritorio");
-  
   const btnBuscarMovil = document.getElementById("btnModalBuscarMovil");
 
   const inputModalUbicacion = document.getElementById("inputModalUbicacion");
   const inputModalHuespedes = document.getElementById("inputModalHuespedes");
-
-  let cantidadAdultos = 0;
-  let cantidadNinos = 0;
-  let filtroCiudadTexto = "";
-
-  function ejecutarFiltro() {
-    const totalHuespedes = cantidadAdultos + cantidadNinos;
-
-    const listaFiltrada = alojamientos.filter((alojamiento) => {
-      const coincideCiudad = filtroCiudadTexto === "" || 
-        alojamiento.city.toLowerCase().trim() === filtroCiudadTexto.toLowerCase().trim();
-
-      const coincideHuespedes = alojamiento.maxGuests >= totalHuespedes;
-
-      return coincideCiudad && coincideHuespedes;
-    });
-
-    dibujarTarjetas(listaFiltrada);
-  }
-
-  if (panelUbicaciones && alojamientos) {
-    const ciudadesUnicas = new Set();
-    alojamientos.forEach((alojamiento) => {
-      ciudadesUnicas.add(`${alojamiento.city}|${alojamiento.country}`);
-    });
-
-    panelUbicaciones.innerHTML = "";
-
-    ciudadesUnicas.forEach((registro) => {
-      const [ciudad, pais] = registro.split("|");
-      panelUbicaciones.innerHTML += crearBotonCiudad(ciudad, pais);
-    });
-  }
-
-  if (panelUbicaciones) {
-    panelUbicaciones.addEventListener("click", (e) => {
-      e.stopPropagation();
-      const botonPresionado = e.target.closest(".itemCiudad");
-
-      if (botonPresionado && inputModalUbicacion) {
-        const ciudadSeleccionada = botonPresionado.getAttribute("data-ciudad");
-
-        filtroCiudadTexto = ciudadSeleccionada;
-        inputModalUbicacion.value = `${ciudadSeleccionada}, Finland`;
-        if (inputEncabezadoUbicacion) inputEncabezadoUbicacion.value = `${ciudadSeleccionada}, Finland`;
-
-        ejecutarFiltro();
-      }
-    });
-  }
-
-  if (inputModalUbicacion) {
-    inputModalUbicacion.addEventListener("input", (e) => {
-      filtroCiudadTexto = e.target.value.replace(", Finland", "").trim();
-      if (inputEncabezadoUbicacion) inputEncabezadoUbicacion.value = e.target.value;
-      ejecutarFiltro();
-    });
-  }
 
   const btnMenosAdultos = document.getElementById("btnMenosAdultos");
   const txtAdultos = document.getElementById("txtAdultos");
@@ -87,128 +35,276 @@ export function inicializarFiltros(alojamientos, dibujarTarjetas) {
   const txtNinos = document.getElementById("txtNinos");
   const btnMasNinos = document.getElementById("btnMasNinos");
 
-  if (btnMenosAdultos && btnMasAdultos && txtAdultos) {
-    btnMenosAdultos.addEventListener("click", (e) => {
-      e.stopPropagation();
-      if (cantidadAdultos > 0) {
-        cantidadAdultos--;
-        txtAdultos.textContent = cantidadAdultos;
-        actualizarMarcadorHuespedes();
+
+  // ----------------------------------------------
+  // FUNCIÓN PRINCIPAL: filtra los alojamientos
+  // ----------------------------------------------
+  function filtrarAlojamientos() {
+    const totalHuespedes = cantidadAdultos + cantidadNinos;
+    const resultado = [];
+
+    for (let i = 0; i < alojamientos.length; i++) {
+      const alojamiento = alojamientos[i];
+
+      let coincideCiudad = false;
+      if (ciudadElegida === "") {
+        coincideCiudad = true;
+      } else if (alojamiento.city.toLowerCase() === ciudadElegida.toLowerCase()) {
+        coincideCiudad = true;
       }
-    });
 
-    btnMasAdultos.addEventListener("click", (e) => {
-      e.stopPropagation();
-      cantidadAdultos++;
-      txtAdultos.textContent = cantidadAdultos;
-      actualizarMarcadorHuespedes();
-    });
-  }
-
-  if (btnMenosNinos && btnMasNinos && txtNinos) {
-    btnMenosNinos.addEventListener("click", (e) => {
-      e.stopPropagation();
-      if (cantidadNinos > 0) {
-        cantidadNinos--;
-        txtNinos.textContent = cantidadNinos;
-        actualizarMarcadorHuespedes();
+      let coincideHuespedes = false;
+      if (alojamiento.maxGuests >= totalHuespedes) {
+        coincideHuespedes = true;
       }
-    });
 
-    btnMasNinos.addEventListener("click", (e) => {
-      e.stopPropagation();
-      cantidadNinos++;
-      txtNinos.textContent = cantidadNinos;
-      actualizarMarcadorHuespedes();
-    });
+      if (coincideCiudad && coincideHuespedes) {
+        resultado.push(alojamiento);
+      }
+    }
+
+    dibujarTarjetas(resultado);
   }
 
-  function actualizarMarcadorHuespedes() {
-    const total = cantidadAdultos + cantidadNinos;
-    const textoResumen = total > 0 ? `${total} guests` : "";
 
-    if (inputModalHuespedes) inputModalHuespedes.value = textoResumen;
-    if (inputEncabezadoHuespedes) inputEncabezadoHuespedes.value = textoResumen;
+  // ----------------------------------------------
+  // CREAR LISTA DE CIUDADES (sin repetir)
+  // ----------------------------------------------
+  if (panelUbicaciones) {
+    const ciudadesYaAgregadas = [];
 
-    ejecutarFiltro();
-  }
+    for (let i = 0; i < alojamientos.length; i++) {
+      const ciudad = alojamientos[i].city;
+      const pais = alojamientos[i].country;
 
-  function alternarModal(seccionInicial) {
-    if (!modal) return;
-    if (modal.style.display === "none") {
-      modal.style.display = "flex";
-      if (seccionInicial === "location") mostrarSeccionUbicacion();
-      if (seccionInicial === "guests") mostrarSeccionHuespedes();
-    } else {
-      modal.style.display = "none";
+      if (ciudadesYaAgregadas.indexOf(ciudad) === -1) {
+        ciudadesYaAgregadas.push(ciudad);
+        panelUbicaciones.innerHTML += crearBotonCiudad(ciudad, pais);
+      }
     }
   }
 
-  function ocultarModal() {
-    if (modal) modal.style.display = "none";
-  }
 
-  function mostrarSeccionUbicacion() {
-    if (panelUbicaciones) panelUbicaciones.style.display = "flex";
-    if (panelHuespedes) panelHuespedes.style.display = "none";
-
-    if (pestañaUbicacion) pestañaUbicacion.className = "flex-1 px-6 py-3 border border-gray-900 rounded-2xl bg-gray-50 cursor-pointer";
-    if (pestañaHuespedes) pestañaHuespedes.className = "flex-1 px-6 py-3 border border-transparent cursor-pointer hover:bg-gray-50";
-  }
-
-  function mostrarSeccionHuespedes() {
-    if (panelHuespedes) panelHuespedes.style.display = "flex";
-    if (panelUbicaciones) panelUbicaciones.style.display = "none";
-
-    if (pestañaHuespedes) pestañaHuespedes.className = "flex-1 px-6 py-3 border border-gray-900 rounded-2xl bg-gray-50 cursor-pointer";
-    if (pestañaUbicacion) pestañaUbicacion.className = "flex-1 px-6 py-3 border border-transparent cursor-pointer hover:bg-gray-50";
-  }
-
-  if (inputEncabezadoUbicacion) {
-    inputEncabezadoUbicacion.addEventListener("click", (e) => {
+  // ----------------------------------------------
+  // CLIC EN UNA CIUDAD DE LA LISTA
+  // ----------------------------------------------
+  if (panelUbicaciones) {
+    panelUbicaciones.addEventListener("click", function (e) {
       e.stopPropagation();
-      alternarModal("location");
+
+      const boton = e.target.closest(".itemCiudad");
+
+      if (boton) {
+        const ciudad = boton.getAttribute("data-ciudad");
+        ciudadElegida = ciudad;
+
+        inputModalUbicacion.value = ciudad + ", Finland";
+        inputEncabezadoUbicacion.value = ciudad + ", Finland";
+
+        filtrarAlojamientos();
+      }
+    });
+  }
+
+
+  // ----------------------------------------------
+  // ESCRIBIR EN EL INPUT DE UBICACIÓN
+  // ----------------------------------------------
+  if (inputModalUbicacion) {
+    inputModalUbicacion.addEventListener("input", function (e) {
+      let texto = e.target.value;
+      texto = texto.replace(", Finland", "");
+      ciudadElegida = texto;
+
+      inputEncabezadoUbicacion.value = e.target.value;
+
+      filtrarAlojamientos();
+    });
+  }
+
+
+  // ----------------------------------------------
+  // BOTONES DE ADULTOS
+  // ----------------------------------------------
+  if (btnMenosAdultos) {
+    btnMenosAdultos.addEventListener("click", function (e) {
+      e.stopPropagation();
+
+      if (cantidadAdultos > 0) {
+        cantidadAdultos = cantidadAdultos - 1;
+        txtAdultos.textContent = cantidadAdultos;
+        actualizarTextoHuespedes();
+      }
+    });
+  }
+
+  if (btnMasAdultos) {
+    btnMasAdultos.addEventListener("click", function (e) {
+      e.stopPropagation();
+
+      cantidadAdultos = cantidadAdultos + 1;
+      txtAdultos.textContent = cantidadAdultos;
+      actualizarTextoHuespedes();
+    });
+  }
+
+
+  // ----------------------------------------------
+  // BOTONES DE NIÑOS
+  // ----------------------------------------------
+  if (btnMenosNinos) {
+    btnMenosNinos.addEventListener("click", function (e) {
+      e.stopPropagation();
+
+      if (cantidadNinos > 0) {
+        cantidadNinos = cantidadNinos - 1;
+        txtNinos.textContent = cantidadNinos;
+        actualizarTextoHuespedes();
+      }
+    });
+  }
+
+  if (btnMasNinos) {
+    btnMasNinos.addEventListener("click", function (e) {
+      e.stopPropagation();
+
+      cantidadNinos = cantidadNinos + 1;
+      txtNinos.textContent = cantidadNinos;
+      actualizarTextoHuespedes();
+    });
+  }
+
+
+  // ----------------------------------------------
+  // ACTUALIZAR EL TEXTO "X guests"
+  // ----------------------------------------------
+  function actualizarTextoHuespedes() {
+    const total = cantidadAdultos + cantidadNinos;
+
+    let texto = "";
+    if (total > 0) {
+      texto = total + " guests";
+    }
+
+    inputModalHuespedes.value = texto;
+    inputEncabezadoHuespedes.value = texto;
+
+    filtrarAlojamientos();
+  }
+
+
+  // ----------------------------------------------
+  // ABRIR Y CERRAR EL MODAL
+  // ----------------------------------------------
+  function abrirModal(seccion) {
+    modal.style.display = "flex";
+
+    if (seccion === "location") {
+      mostrarUbicaciones();
+    }
+    if (seccion === "guests") {
+      mostrarHuespedes();
+    }
+  }
+
+  function cerrarModal() {
+    modal.style.display = "none";
+  }
+
+
+  // ----------------------------------------------
+  // MOSTRAR PESTAÑA UBICACIÓN
+  // ----------------------------------------------
+  function mostrarUbicaciones() {
+    panelUbicaciones.style.display = "flex";
+    panelHuespedes.style.display = "none";
+
+    pestanaUbicacion.className = "flex-1 px-6 py-3 border border-gray-900 rounded-2xl bg-gray-50 cursor-pointer";
+    pestanaHuespedes.className = "flex-1 px-6 py-3 border border-transparent cursor-pointer hover:bg-gray-50";
+  }
+
+
+  // ----------------------------------------------
+  // MOSTRAR PESTAÑA HUÉSPEDES
+  // ----------------------------------------------
+  function mostrarHuespedes() {
+    panelHuespedes.style.display = "flex";
+    panelUbicaciones.style.display = "none";
+
+    pestanaHuespedes.className = "flex-1 px-6 py-3 border border-gray-900 rounded-2xl bg-gray-50 cursor-pointer";
+    pestanaUbicacion.className = "flex-1 px-6 py-3 border border-transparent cursor-pointer hover:bg-gray-50";
+  }
+
+
+  // ----------------------------------------------
+  // EVENTOS PARA ABRIR EL MODAL
+  // ----------------------------------------------
+  if (inputEncabezadoUbicacion) {
+    inputEncabezadoUbicacion.addEventListener("click", function (e) {
+      e.stopPropagation();
+      abrirModal("location");
     });
   }
 
   if (inputEncabezadoHuespedes) {
-    inputEncabezadoHuespedes.addEventListener("click", (e) => {
+    inputEncabezadoHuespedes.addEventListener("click", function (e) {
       e.stopPropagation();
-      alternarModal("guests");
+      abrirModal("guests");
     });
   }
 
   if (btnEncabezadoBuscar) {
-    btnEncabezadoBuscar.addEventListener("click", (e) => {
+    btnEncabezadoBuscar.addEventListener("click", function (e) {
       e.stopPropagation();
-      alternarModal("location");
+      abrirModal("location");
     });
   }
 
+
+  // ----------------------------------------------
+  // EVENTO PARA CERRAR EL MODAL
+  // ----------------------------------------------
   if (btnCerrar) {
-    btnCerrar.addEventListener("click", (e) => { e.stopPropagation(); ocultarModal(); });
-  }
-
-  if (pestañaUbicacion) {
-    pestañaUbicacion.addEventListener("click", (e) => {
+    btnCerrar.addEventListener("click", function (e) {
       e.stopPropagation();
-      mostrarSeccionUbicacion();
+      cerrarModal();
     });
   }
 
-  if (pestañaHuespedes) {
-    pestañaHuespedes.addEventListener("click", (e) => {
+
+  // ----------------------------------------------
+  // EVENTOS PARA CAMBIAR DE PESTAÑA DENTRO DEL MODAL
+  // ----------------------------------------------
+  if (pestanaUbicacion) {
+    pestanaUbicacion.addEventListener("click", function (e) {
       e.stopPropagation();
-      mostrarSeccionHuespedes();
+      mostrarUbicaciones();
     });
   }
 
+  if (pestanaHuespedes) {
+    pestanaHuespedes.addEventListener("click", function (e) {
+      e.stopPropagation();
+      mostrarHuespedes();
+    });
+  }
+
+
+  // ----------------------------------------------
+  // BOTONES "BUSCAR" QUE CIERRAN EL MODAL
+  // ----------------------------------------------
   if (btnBuscarEscritorio) {
-    btnBuscarEscritorio.addEventListener("click", (e) => { e.stopPropagation(); ocultarModal(); });
+    btnBuscarEscritorio.addEventListener("click", function (e) {
+      e.stopPropagation();
+      cerrarModal();
+    });
   }
-
 
   if (btnBuscarMovil) {
-    btnBuscarMovil.addEventListener("click", (e) => { e.stopPropagation(); ocultarModal(); });
+    btnBuscarMovil.addEventListener("click", function (e) {
+      e.stopPropagation();
+      cerrarModal();
+    });
   }
+
 }

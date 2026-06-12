@@ -1,7 +1,3 @@
-/**
- * Genera la estructura HTML base para el panel de búsqueda desplegable (Modal).
- * @returns {string} Código HTML en plantilla literal.
- */
 export function crearPanelBusqueda() {
   return `
     <div id="ventanaEmergenteBusqueda" style="display: none;" class="fixed inset-0 bg-black/40 z-50 flex flex-col bg-white md:block md:h-[460px]">
