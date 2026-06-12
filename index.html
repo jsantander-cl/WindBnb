@@ -4,55 +4,53 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="style.css" />
-    <!-- Módulo principal de JavaScript que arranca la aplicación -->
     <script type="module" src="/main.js"></script>
     <title>Windbnb - Alojamientos</title>
   </head>
 
   <body class="bg-gray-100 text-gray-800">
  
-    <!-- ENCABEZADO: Contiene el logo y la barra de búsqueda adaptables a móvil/desktop -->
     <header class="bg-white px-4 py-6 flex flex-col gap-4 md:flex-row md:justify-between md:items-center md:px-20">
  
-      <!-- Área del Logo Corporativo -->
+      <!-- Logo -->
       <div class="flex items-center gap-2">
         <img src="./public/images/icons/logo-f7862584.svg" alt="windbnb logo" class="w-30" />
       </div>
  
-      <!-- Barra de búsqueda interactiva (Actúa como disparador del panel de filtros) -->
+      <!-- Barra de búsqueda -->
       <div class="flex items-center border border-gray-300 rounded-2xl overflow-hidden bg-white shadow-md">
         <input 
-          id="input-location"
+          id="encabezadoFiltroUbicacion"
           type="text"
           placeholder="Add location"
-          readonly
+          readonly  
           class="flex-1 px-4 py-3 text-sm outline-none placeholder-gray-400 cursor-pointer"
         />
         <input
-          id="input-guests"
+          id="encabezadoFiltroHuespedes"
           type="text"
           placeholder="Add guests"
           readonly
           class="flex-1 px-4 py-3 text-sm outline-none placeholder-gray-400 border-l border-gray-300 cursor-pointer"
         />
-        <button id="btn-header-search" class="px-4 py-3 flex items-center justify-center cursor-pointer">
+        <button id="btnEncabezadoBuscar" class="px-4 py-3 flex items-center justify-center cursor-pointer">
           <img src="./public/images/icons/search.svg" alt="buscar" class="w-5 h-5" />
         </button>
       </div>
  
     </header>
  
-    <!-- CONTENIDO PRINCIPAL: Contiene el título dinámico, contador y catálogo de habitaciones -->
+    <!-- CUERPO DE CONTENIDO -->
     <main class="px-4 py-8 md:px-20">
  
-      <!-- Fila informativa de cabecera -->
+      <!-- Título y contador -->
       <div class="flex justify-between items-center mb-6">
         <h1 class="text-2xl font-extrabold md:text-3xl">Stays in Finland</h1>
-        <span class="text-sm text-gray-500" id="stays-count">0 stays</span>
+        <span id="contadorAlojamientos" class="text-sm text-gray-500">0 stays</span>
       </div>
  
-      <!-- Contenedor cuadriculado donde JavaScript inyectará las tarjetas de habitaciones -->
-      <div class="grid grid-cols-1 gap-8 md:grid-cols-3" id="stays-list">
+      <!-- Columnas de las cards -->
+      <div id="listaAlojamientos" class="grid grid-cols-1 gap-8 md:grid-cols-3">
       </div>
  
     </main>
